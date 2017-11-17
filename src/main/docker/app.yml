@@ -8,12 +8,17 @@ services:
             - SPRING_CLOUD_CONFIG_URI=http://admin:$${jhipster.registry.password}@jhipster-registry:8761/config
             - SPRING_DATASOURCE_URL=jdbc:postgresql://apigateway-postgresql:5432/apigateway
             - JHIPSTER_SLEEP=30 # gives time for the JHipster Registry to boot before the application
+            - SPRING_DATA_ELASTICSEARCH_CLUSTER_NODES=apigateway-elasticsearch:9300
         ports:
             - 8080:8080
     apigateway-postgresql:
         extends:
             file: postgresql.yml
             service: apigateway-postgresql
+    apigateway-elasticsearch:
+        extends:
+            file: elasticsearch.yml
+            service: apigateway-elasticsearch
     jhipster-registry:
         extends:
             file: jhipster-registry.yml
