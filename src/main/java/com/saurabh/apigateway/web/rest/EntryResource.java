@@ -2,14 +2,14 @@ package com.saurabh.apigateway.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
 import com.saurabh.apigateway.domain.Entry;
-
 import com.saurabh.apigateway.repository.EntryRepository;
 import com.saurabh.apigateway.repository.search.EntrySearchRepository;
+import com.saurabh.apigateway.security.SecurityUtils;
 import com.saurabh.apigateway.web.rest.errors.BadRequestAlertException;
 import com.saurabh.apigateway.web.rest.util.HeaderUtil;
 import com.saurabh.apigateway.web.rest.util.PaginationUtil;
-import io.swagger.annotations.ApiParam;
 import io.github.jhipster.web.util.ResponseUtil;
+import io.swagger.annotations.ApiParam;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -22,13 +22,10 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
-
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
 
-import static org.elasticsearch.index.query.QueryBuilders.*;
+import static org.elasticsearch.index.query.QueryBuilders.queryStringQuery;
 
 /**
  * REST controller for managing Entry.
@@ -104,7 +101,7 @@ public class EntryResource {
     @Timed
     public ResponseEntity<List<Entry>> getAllEntries(@ApiParam Pageable pageable) {
         log.debug("REST request to get a page of Entries");
-        Page<Entry> page = entryRepository.findAll(pageable);
+        Page<Entry> page = entryRepository.findByBlogUserLoginOrderByDateDesc(SecurityUtils.getCurrentUserLogin(),pageable);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/entries");
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
