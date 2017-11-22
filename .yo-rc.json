@@ -2,7 +2,8 @@
   "generator-jhipster": {
     "promptValues": {
       "packageName": "com.saurabh.apigateway",
-      "nativeLanguage": "en"
+      "nativeLanguage": "en",
+      "microservicePath": "D:\\jHipster\\Project1\\microhipster\\store"
     },
     "jhipsterVersion": "4.10.2",
     "baseName": "apigateway",
